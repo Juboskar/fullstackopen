@@ -1,30 +1,42 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const CountryList = (props) => {
-  if (props.countryList.length === 1) {
-    const c = props.countryList[0]
-    const l = Object.values(c.languages)
+const CountryInfo = (props) => {
+  const c = props.country
+  const l = Object.values(c.languages)
 
+  return (
+    <div>
+      <h1>
+        {c.name.common}
+      </h1>
+      <div>capital {c.capital}</div>
+      <div>area {c.area}</div>
+      <h4>languages:</h4>
+      <ul>
+        {l.map(x => <li key={x}>{x}</li>)}
+      </ul>
+      <img src={c.flags.svg} width="300" />
+    </div>)
+}
+
+const CountryList = (props) => {
+  if (props.selectedCountry.length != 0) {
+    return <CountryInfo country={props.selectedCountry}></CountryInfo>
+  }
+  else if (props.countryList.length === 1) {
+    const c = props.countryList[0]
     return (
-      <div>
-        <h1>
-          {c.name.common}
-        </h1>
-        <div>capital {c.capital}</div>
-        <div>area {c.area}</div>
-        <h4>languages:</h4>
-        <ul>
-          {l.map(x => <li>{x}</li>)}
-        </ul>
-        <img src={c.flags.svg} width="300" />
-      </div>
+      <CountryInfo country={c}></CountryInfo>
     )
   } else if (props.countryList.length <= 10) {
     return (
       <div>
         {props.countryList.map(c =>
-          <div key={c.name.common}>{c.name.common}</div>
+          <div key={c.name.common}>
+            <label>{c.name.common}</label>
+            <button onClick={() => props.selectCountry(c)}>show</button>
+          </div>
         )}
       </div>
     )
@@ -38,6 +50,7 @@ const CountryList = (props) => {
 const App = () => {
   const [countries, setCountries] = useState([])
   const [filter, setFilter] = useState('')
+  const [selectedCountry, selectCountry] = useState([])
 
   useEffect(() => {
     axios
@@ -49,6 +62,7 @@ const App = () => {
 
   const handleValueChange = (event) => {
     setFilter(event.target.value)
+    selectCountry([])
   }
 
   const countriesToShow =
@@ -60,7 +74,8 @@ const App = () => {
         Find countries
         <input onChange={handleValueChange} />
       </label>
-      <CountryList countryList={countriesToShow} />
+      <CountryList countryList={countriesToShow} selectCountry={selectCountry}
+        selectedCountry={selectedCountry} />
     </div>
   );
 }
