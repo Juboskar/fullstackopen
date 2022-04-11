@@ -1,6 +1,32 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const Weather = (props) => {
+  const [weather, setWeather] = useState([])
+  const c = props.country
+
+  useEffect(() => {
+    axios
+      .get('https://api.openweathermap.org/data/2.5/weather?q=' + c.capital + '&appid='
+        + process.env.REACT_APP_WEATHER_KEY)
+      .then(response => {
+        setWeather(response.data)
+      })
+  }, [])
+
+  if (weather.length === 0) { return (<div>Ladataan</div>) }
+
+  const img_src = 'http://openweathermap.org/img/wn/' + weather.weather[0].icon + '@2x.png'
+  return (
+    <div>
+      <h1>Weather in {c.capital}</h1>
+      <div> temperature {Math.round((weather.main.temp - 273.15) * 100) / 100} Celsius </div>
+      <img src={img_src} />
+      <div> wind {weather.wind.speed} m/s</div>
+    </div>
+  )
+}
+
 const CountryInfo = (props) => {
   const c = props.country
   const l = Object.values(c.languages)
@@ -17,6 +43,7 @@ const CountryInfo = (props) => {
         {l.map(x => <li key={x}>{x}</li>)}
       </ul>
       <img src={c.flags.svg} width="300" />
+      <Weather country={c} />
     </div>)
 }
 
@@ -58,7 +85,7 @@ const App = () => {
       .then(response => {
         setCountries(response.data)
       })
-  })
+  }, [])
 
   const handleValueChange = (event) => {
     setFilter(event.target.value)
