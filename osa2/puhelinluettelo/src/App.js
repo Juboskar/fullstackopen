@@ -59,7 +59,11 @@ const App = () => {
     }
 
     if (persons.map(p => p.name).includes(newName)) {
-      window.alert(`${newName} is already added to phonebook`);
+      const id = persons.filter(item => item.name === newName)[0].id
+      personService.update(id, personObject).then(response => {
+        setPersons(persons.map(p => p.id !== id ? p : response.data))
+      }
+      )
     }
     else {
       personService.create(personObject)
@@ -86,8 +90,8 @@ const App = () => {
 
   const deletePerson = (id, name) => {
     if (window.confirm('Delete ' + name)) {
-      personService.delete(id)
-      setPersons(persons.filter(item => item.id !== id))
+      personService.delete(id).then(
+      setPersons(persons.filter(item => item.id !== id)))
     }
   }
 
