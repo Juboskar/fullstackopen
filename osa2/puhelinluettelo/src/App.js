@@ -30,7 +30,10 @@ const Persons = (props) => {
   return (
     <div>
       {props.personsToShow.map(p =>
-        <p key={p.name}>{p.name} {p.number}</p>
+        <div key={p.name}>
+          <p>{p.name} {p.number}</p>
+          <button onClick={() => props.del(p.id)}>delete</button>
+        </div>
       )}
     </div>
   )
@@ -59,7 +62,7 @@ const App = () => {
       window.alert(`${newName} is already added to phonebook`);
     }
     else {
-        personService.create(personObject)
+      personService.create(personObject)
         .then(response => {
           console.log(response)
           setPersons(persons.concat(personObject))
@@ -81,6 +84,13 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
+  const deletePerson = (id) => {
+    if (window.confirm('ok?')) {
+      personService.delete(id)
+      setPersons(persons.filter(item => item.id !== id))
+    }
+  }
+
   const personsToShow = persons.filter(p => p.name.includes(newFilterValue))
 
   return (
@@ -94,7 +104,7 @@ const App = () => {
         newPhone={newPhone}
         handleNewPhone={handleNewPhone} />
       <h2>Numbers</h2>
-      <Persons personsToShow={personsToShow} />
+      <Persons personsToShow={personsToShow} del={deletePerson} />
     </div>
   )
 
