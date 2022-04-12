@@ -29,7 +29,7 @@ const Persons = (props) => {
   return (
     <div>
       {props.personsToShow.map(p =>
-        <p key={p.name}>{p.name} {p.phone}</p>
+        <p key={p.name}>{p.name} {p.number}</p>
       )}
     </div>
   )
@@ -51,16 +51,21 @@ const App = () => {
     event.preventDefault()
     const personObject = {
       name: newName,
-      phone: newPhone
+      number: newPhone
     }
 
     if (persons.map(p => p.name).includes(newName)) {
       window.alert(`${newName} is already added to phonebook`);
     }
     else {
-      setPersons(persons.concat(personObject))
-      setNewName('')
-      setNewPhone('')
+      axios
+        .post('http://localhost:3001/persons', personObject)
+        .then(response => {
+          console.log(response)
+          setPersons(persons.concat(personObject))
+          setNewName('')
+          setNewPhone('')
+        })
     }
   }
 
