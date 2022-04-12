@@ -32,7 +32,7 @@ const Persons = (props) => {
       {props.personsToShow.map(p =>
         <div key={p.name}>
           <p>{p.name} {p.number}</p>
-          <button onClick={() => props.del(p.id)}>delete</button>
+          <button onClick={() => props.del(p.id, p.name)}>delete</button>
         </div>
       )}
     </div>
@@ -84,8 +84,8 @@ const App = () => {
     setNewFilter(event.target.value)
   }
 
-  const deletePerson = (id) => {
-    if (window.confirm('ok?')) {
+  const deletePerson = (id, name) => {
+    if (window.confirm('Delete ' + name)) {
       personService.delete(id)
       setPersons(persons.filter(item => item.id !== id))
     }
