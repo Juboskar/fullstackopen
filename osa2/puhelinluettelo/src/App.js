@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
 
-const Notification = ({ message }) => {
+const Notification = ({ message, error }) => {
   if (message === null) {
     return null
   }
 
+  const messageColor = error ? 'red' : 'green'
+
   const messageStyle = {
-    color: 'green',
+    color: messageColor,
     background: 'lightgrey',
     fontSize: 20,
     borderStyle: 'solid',
@@ -66,6 +68,7 @@ const App = () => {
   const [newPhone, setNewPhone] = useState('')
   const [newFilterValue, setNewFilter] = useState('')
   const [message, setMessage] = useState(null)
+  const [error, setError] = useState(false)
 
   const getPersons = () => {
     console.log('effect')
@@ -121,12 +124,22 @@ const App = () => {
 
   const deletePerson = (id, name) => {
     if (window.confirm('Delete ' + name)) {
-      personService.delete(id).then(
-        setPersons(persons.filter(item => item.id !== id)))
-      setMessage('Deleted ' + name)
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
+      personService.delete(id).then(() => {
+        setPersons(persons.filter(item => item.id !== id))
+        setMessage('Deleted ' + name)
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+      }).catch(error => {
+        setError(true)
+        setMessage(
+          `Information of '${name}' was already removed from server`
+        )
+        setTimeout(() => {
+          setMessage(null)
+          setError(false)
+        }, 5000)
+      })
     }
   }
 
@@ -135,7 +148,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} error={error} />
       <Filter newFilterValue={newFilterValue} handleNewFilter={handleNewFilter} />
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson}
