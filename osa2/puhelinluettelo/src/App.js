@@ -1,6 +1,27 @@
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import personService from './services/persons'
+
+const Notification = ({ message }) => {
+  if (message === null) {
+    return null
+  }
+
+  const messageStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: 20,
+    borderStyle: 'solid',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10
+  }
+
+  return (
+    <div style={messageStyle}>
+      {message}
+    </div>
+  )
+}
 
 const Filter = (props) => {
   return (
@@ -44,12 +65,16 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newPhone, setNewPhone] = useState('')
   const [newFilterValue, setNewFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
-  useEffect(() => {
+  const getPersons = () => {
+    console.log('effect')
     personService.getAll().then(response => {
       setPersons(response.data)
     })
-  }, [])
+  }
+
+  useEffect(getPersons, [])
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -60,20 +85,26 @@ const App = () => {
 
     if (persons.map(p => p.name).includes(newName)) {
       const id = persons.filter(item => item.name === newName)[0].id
-      personService.update(id, personObject).then(response => {
-        setPersons(persons.map(p => p.id !== id ? p : response.data))
-      }
-      )
+      personService.update(id, personObject)
+        .then(response => {
+          setPersons(persons.map(p => p.id !== id ? p : response.data))
+          setMessage('Edited ' + newName)
+        })
     }
     else {
       personService.create(personObject)
         .then(response => {
           console.log(response)
+          personObject.id = persons.length + 1
           setPersons(persons.concat(personObject))
-          setNewName('')
-          setNewPhone('')
+          setMessage('Added ' + newName)
         })
     }
+    setNewName('')
+    setNewPhone('')
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
   }
 
   const handleNewName = (event) => {
@@ -91,7 +122,11 @@ const App = () => {
   const deletePerson = (id, name) => {
     if (window.confirm('Delete ' + name)) {
       personService.delete(id).then(
-      setPersons(persons.filter(item => item.id !== id)))
+        setPersons(persons.filter(item => item.id !== id)))
+      setMessage('Deleted ' + name)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
 
@@ -100,6 +135,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter newFilterValue={newFilterValue} handleNewFilter={handleNewFilter} />
       <h2>Add a new</h2>
       <PersonForm addPerson={addPerson}
