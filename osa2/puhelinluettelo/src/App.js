@@ -101,12 +101,16 @@ const App = () => {
           personObject.id = persons.length + 1
           setPersons(persons.concat(personObject))
           setMessage('Added ' + newName)
+        }).catch(error => {
+          setMessage(error.response.data.error)
+          setError(true)
         })
     }
     setNewName('')
     setNewPhone('')
     setTimeout(() => {
       setMessage(null)
+      setError(false)
     }, 5000)
   }
 
