@@ -92,6 +92,9 @@ const App = () => {
         .then(response => {
           setPersons(persons.map(p => p.id !== id ? p : response.data))
           setMessage('Edited ' + newName)
+        }).catch(error => {
+          setMessage(error.response.data.error)
+          setError(true)
         })
     }
     else {
