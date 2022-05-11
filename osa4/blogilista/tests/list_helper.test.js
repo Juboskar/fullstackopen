@@ -32,8 +32,8 @@ describe('total likes', () => {
 })
 
 describe('max likes', () => {
-  test('test with maximum likes equals right object', () => {
-    const example = {
+  test('blog with maximum likes equals right object', () => {
+    const favorite = {
       _id: '5a422b3a1b54a676234d17f9',
       title: 'Canonical string reduction',
       author: 'Edsger W. Dijkstra',
@@ -41,6 +41,26 @@ describe('max likes', () => {
       likes: 12,
       __v: 0
     }
-    expect(listHelper.favoriteBlog(blogs)).toEqual(example)
+    expect(listHelper.favoriteBlog(blogs)).toEqual(favorite)
+  })
+})
+
+describe('most common', () => {
+  test('most common blog equals right object', () => {
+    const mostCommon = {
+      author: "Robert C. Martin",
+      blogs: 3
+    }
+    expect(listHelper.mostBlogs(blogs)).toEqual(mostCommon)
+  })
+})
+
+describe('most likes', () => {
+  test('most liked blog equals right object', () => {
+    const mostLikes = {
+      author: "Edsger W. Dijkstra",
+      likes: 17
+    }
+    expect(listHelper.mostLikes(blogs)).toEqual(mostLikes)
   })
 })
