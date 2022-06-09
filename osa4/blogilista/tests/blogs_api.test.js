@@ -63,6 +63,27 @@ test('a valid blog can be added ', async () => {
   )
 })
 
+test('likes is 0 when not defined', async () => {
+  const newBlog = {
+    title: 'Test Title',
+    author: 'Example Writer',
+    url: 'http://example.com'
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const content = response.body.filter(r => r.title === 'Test Title')
+
+  expect(content[0].likes).toBe(0)
+})
+
+
 afterAll(() => {
   mongoose.connection.close()
 })
