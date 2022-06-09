@@ -125,7 +125,29 @@ test('a blog can be deleted', async () => {
     .expect(204)
 
   const response = await api.get('/api/blogs')
-  expect(response.body).toHaveLength(initialBlogs.length-1)
+  expect(response.body).toHaveLength(initialBlogs.length - 1)
+})
+
+test('a blog can be updated', async () => {
+  const newBlog = {
+    title: 'Test Title',
+    author: 'Example Writer',
+    url: 'http://example.com',
+    likes: 42
+  }
+
+  await api.put('/api/blogs/5a422bc61b54a676234d17fc')
+    .send(newBlog)
+    .expect(200)
+
+  const response = await api.get('/api/blogs')
+
+  const contents = response.body.map(r => r.title)
+
+  expect(response.body).toHaveLength(initialBlogs.length)
+  expect(contents).toContain(
+    'Test Title'
+  )
 })
 
 afterAll(() => {
