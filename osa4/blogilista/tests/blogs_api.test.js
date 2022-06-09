@@ -120,6 +120,14 @@ test('a blog with missing author can not be added', async () => {
 
 })
 
+test('a blog can be deleted', async () => {
+  await api.delete('/api/blogs/5a422bc61b54a676234d17fc')
+    .expect(204)
+
+  const response = await api.get('/api/blogs')
+  expect(response.body).toHaveLength(initialBlogs.length-1)
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
