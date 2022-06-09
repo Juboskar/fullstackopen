@@ -9,6 +9,14 @@ blogsRouter.get('/', async (request, response) => {
 blogsRouter.post('/', (request, response) => {
   const blog = new Blog(request.body)
 
+  if (blog.title === undefined) {
+    return response.status(400).json({ error: 'title missing' })
+  }
+
+  if (blog.author === undefined) {
+    return response.status(400).json({ error: 'author missing' })
+  }
+
   if (blog.likes === undefined) {
     blog.likes = 0
   }
