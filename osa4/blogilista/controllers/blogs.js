@@ -1,9 +1,10 @@
 const blogsRouter = require('express').Router()
 const { result } = require('lodash')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 blogsRouter.get('/', async (request, response) => {
-  const blogs = await Blog.find({})
+  const blogs = await Blog.find({}).populate('user',  { username: 1, name: 1, id: 1 })
   response.json(blogs)
 })
 
@@ -22,7 +23,17 @@ blogsRouter.post('/', async (request, response) => {
     blog.likes = 0
   }
 
+  // temporary way of finding user id
+  const users = await User.find({})
+
+  const userId = users[0]._id
+  blog.user = userId
   const result = await blog.save()
+
+  const user = await User.findById(userId)
+  user.blogs = user.blogs.concat(result._id)
+  await user.save()
+
   return response.status(201).json(result)
 
 })
