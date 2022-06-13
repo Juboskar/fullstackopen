@@ -1,8 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -12,6 +13,8 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+
+  const blogFormRef = useRef()
 
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
@@ -72,6 +75,7 @@ const App = () => {
         }
       )
       setBlogs(blogs.concat(newBlog))
+      blogFormRef.current.toggleVisibility()
 
       setMessage(`a new blog ${title} by ${author} added`)
       setTimeout(() => {
@@ -115,15 +119,17 @@ const App = () => {
             <Blog key={blog.id} blog={blog} />
           )
         }
-        <NewBlogForm
-          setTitle={setTitle}
-          setAuthor={setAuthor}
-          setUrl={setUrl}
-          title={title}
-          author={author}
-          url={url}
-          handleCreateBlog={handleCreateBlog}
-        />
+        <Togglable buttonLabel="create new" ref={blogFormRef}>
+          <NewBlogForm
+            setTitle={setTitle}
+            setAuthor={setAuthor}
+            setUrl={setUrl}
+            title={title}
+            author={author}
+            url={url}
+            handleCreateBlog={handleCreateBlog}
+          />
+        </Togglable>
       </div >
     )
   }
