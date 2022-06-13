@@ -1,6 +1,5 @@
 const blogsRouter = require('express').Router()
 const { result } = require('lodash')
-const jwt = require('jsonwebtoken')
 
 const Blog = require('../models/blog')
 const User = require('../models/user')
@@ -15,12 +14,6 @@ blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   try {
-    const decodedToken = jwt.verify(request.token, process.env.SECRET)
-    if (!request.token || !decodedToken.id) {
-      return response.status(401).json({ error: 'token missing or invalid' })
-    }
-
-
     if (blog.title === undefined) {
       return response.status(400).json({ error: 'title missing' })
     }
@@ -34,7 +27,7 @@ blogsRouter.post('/', async (request, response, next) => {
     }
 
 
-    const user = await User.findById(decodedToken.id)
+    const user = await User.findById(request.user)
     blog.user = user.id
     const result = await blog.save()
 
@@ -46,6 +39,15 @@ blogsRouter.post('/', async (request, response, next) => {
 })
 
 blogsRouter.delete('/:id', async (request, response, next) => {
+  try {
+    const user = await User.findById(request.user)
+    const blog = await Blog.findById(request.params.id)
+
+    if (blog.user.toString() !== user._id.toString()) {
+      return response.status(403).json('not allowed')
+    }
+  } catch (error) { next(error) }
+
   try {
     await Blog.findByIdAndRemove(request.params.id)
     return response.status(204).end()
