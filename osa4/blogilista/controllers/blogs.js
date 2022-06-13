@@ -14,6 +14,10 @@ blogsRouter.post('/', async (request, response, next) => {
   const blog = new Blog(request.body)
 
   try {
+    if (request.token === null) {
+      return response.status(401).json({ error: 'not allowed' })
+    }
+
     if (blog.title === undefined) {
       return response.status(400).json({ error: 'title missing' })
     }

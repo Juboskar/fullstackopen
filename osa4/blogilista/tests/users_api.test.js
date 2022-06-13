@@ -14,12 +14,12 @@ describe('when there is initially one user at db', () => {
     const user = new User({
       username: 'root',
       name: 'root',
-      password: await bcrypt.hash('sekret', 10)
+      passwordHash: await bcrypt.hash('sekret', 10)
     })
     const user2 = new User({
       username: 'testaaja',
       name: 'Testi User',
-      password: await bcrypt.hash('salasana', 10),
+      passwordHash: await bcrypt.hash('salasana', 10),
     })
 
     await user.save()
