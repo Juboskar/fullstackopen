@@ -13,6 +13,11 @@ const getAll = () => {
 }
 
 const create = async newObject => {
+  if (newObject.title.length === 0 || newObject.author.length === 0
+    || newObject.url.length === 0) {
+    throw new Error("missing info")
+  }
+
   const config = {
     headers: { Authorization: token },
   }

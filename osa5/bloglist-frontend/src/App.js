@@ -5,20 +5,13 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
-import loginService from './services/login'
 
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
-
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
 
   const [message, setMessage] = useState(null)
   const [error, setError] = useState(false)
@@ -38,20 +31,13 @@ const App = () => {
     }
   }, [])
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-
+  const login = (user) => {
+    if (user !== null) {
       window.localStorage.setItem(
         'loggedBlogAppUser', JSON.stringify(user)
       )
       setUser(user)
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
+    } else {
       setMessage('wrong credentials')
       setError(true)
       setTimeout(() => {
@@ -66,26 +52,15 @@ const App = () => {
     setUser(null)
   }
 
-  const handleCreateBlog = async (event) => {
-    event.preventDefault()
-    try {
-      const newBlog = await blogService.create(
-        {
-          title, author, url
-        }
-      )
+  const createBlog = (newBlog) => {
+    if (newBlog !== null) {
       setBlogs(blogs.concat(newBlog))
       blogFormRef.current.toggleVisibility()
-
-      setMessage(`a new blog ${title} by ${author} added`)
+      setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    } catch (exception) {
+    } else {
       setMessage('missing info')
       setError(true)
       setTimeout(() => {
@@ -99,12 +74,7 @@ const App = () => {
     return (
       <div>
         <Notification message={message} error={error} />
-        <Login
-          username={username}
-          password={password}
-          setUsername={setUsername}
-          setPassword={setPassword}
-          handleLogin={handleLogin}
+        <Login login={login}
         />
       </div>)
   } else {
@@ -120,15 +90,7 @@ const App = () => {
           )
         }
         <Togglable buttonLabel="create new" ref={blogFormRef}>
-          <NewBlogForm
-            setTitle={setTitle}
-            setAuthor={setAuthor}
-            setUrl={setUrl}
-            title={title}
-            author={author}
-            url={url}
-            handleCreateBlog={handleCreateBlog}
-          />
+          <NewBlogForm createBlog={createBlog} />
         </Togglable>
       </div >
     )
