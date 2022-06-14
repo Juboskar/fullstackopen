@@ -20,7 +20,7 @@ const NewBlogForm = ({ createBlog }) => {
       setTitle('')
       setAuthor('')
       setUrl('')
-    } catch (error) { createBlog(null)}
+    } catch (error) { createBlog(null) }
   }
 
   return (
