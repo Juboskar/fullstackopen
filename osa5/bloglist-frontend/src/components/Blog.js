@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, setBlogs, blogs }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -11,7 +11,6 @@ const Blog = ({ blog }) => {
   }
 
   const [visible, setVisible] = useState(false)
-  const [likes, setLikes] = useState(blog.likes)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -20,16 +19,19 @@ const Blog = ({ blog }) => {
     setVisible(!visible)
   }
 
-  const handleLike = () => {
+  const handleLike = async () => {
     const updatedBlog = {
       title: blog.title,
       author: blog.author,
       url: blog.url,
       user: blog.user.id,
-      likes: likes + 1
+      likes: blog.likes + 1
     }
-    setLikes(updatedBlog.likes)
-    blogService.update(updatedBlog, blog.id)
+    await blogService.update(updatedBlog, blog.id)
+    const i = blogs.findIndex((obj => obj.id === blog.id))
+    blogs[i].likes = blogs[i].likes + 1
+    blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
+    setBlogs([...blogs])
   }
 
   return (
@@ -43,7 +45,7 @@ const Blog = ({ blog }) => {
       <div style={showWhenVisible}>
         <div>{blog.url}</div>
         <div style={{ display: 'flex' }}>
-          <div>{likes} likes</div>
+          <div>{blog.likes} likes</div>
           <button onClick={handleLike} >like</button>
         </div>
         <div>{blog.user.name}</div>
