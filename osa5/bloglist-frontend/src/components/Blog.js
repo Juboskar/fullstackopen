@@ -46,8 +46,9 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
 
   return (
     <div style={blogStyle}>
-      <div style={{ display: 'flex' }}>
-        <div>{blog.title} {blog.author} </div>
+      <div style={{ display: 'flex' }} className="shownContent">
+        <div style={{ display: 'flex' }}>{blog.title}&nbsp;</div>
+        <div>{blog.author}&nbsp;</div>
         <div style={hideWhenVisible}>
           <button onClick={toggleVisibility}>view</button>
         </div>
@@ -55,11 +56,11 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
           <button onClick={toggleVisibility}>hide</button>
         </div>
       </div>
-      <div style={showWhenVisible}>
+      <div style={showWhenVisible} className="hiddenContent">
         <div>{blog.url}</div>
         <div style={{ display: 'flex' }}>
-          <div>{blog.likes} likes</div>
-          <button onClick={handleLike} >like</button>
+          <div>{blog.likes}&nbsp;</div><div>likes&nbsp;</div>
+          <button onClick={handleLike}>like</button>
         </div>
         <div>{blog.user.name}</div>
         <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
