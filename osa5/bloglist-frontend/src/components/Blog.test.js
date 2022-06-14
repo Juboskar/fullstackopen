@@ -1,6 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 
 describe('<Blog />', () => {
@@ -47,6 +48,14 @@ describe('<Blog />', () => {
   test('url and likes not visible', () => {
     const div = container.querySelector('.hiddenContent')
     expect(div).toHaveStyle('display: none')
+  })
+
+  test('url and likes visible after click', async () => {
+    const user = userEvent.setup()
+    await user.click(screen.getByText('view'))
+
+    const div = container.querySelector('.hiddenContent')
+    expect(div).not.toHaveStyle('display: none')
   })
 
 })
