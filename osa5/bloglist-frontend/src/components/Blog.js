@@ -21,7 +21,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <div style={{ display: 'flex' }} className="shownContent">
         <div style={{ display: 'flex' }}>{blog.title}&nbsp;</div>
         <div>{blog.author}&nbsp;</div>

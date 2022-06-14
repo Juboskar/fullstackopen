@@ -1,4 +1,4 @@
-Cypress.Commands.add('createBlog', (title, author, url) => {
+Cypress.Commands.add('createBlog', (title, author, url, likes) => {
     const user = JSON.parse(localStorage.getItem('loggedBlogAppUser'))
     const authorization = `bearer ${user.token}`
     const options = {
@@ -10,8 +10,11 @@ Cypress.Commands.add('createBlog', (title, author, url) => {
         body: {
             'title': title,
             'author': author,
-            'url': url
+            'url': url,
+            'likes': likes
         }
     };
     cy.request(options)
+    cy.visit('http://localhost:3000')
+
 })

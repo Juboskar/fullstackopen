@@ -56,8 +56,7 @@ describe('Blog app', function () {
     })
 
     it('A blog can be liked', function () {
-      cy.createBlog('abc', 'def', 'www')
-
+      cy.createBlog('abc', 'def', 'www', 0)
       cy.get('#viewButton').click()
       cy.get('#likeButton').click()
       cy.get('#likeButton').click()
@@ -65,12 +64,20 @@ describe('Blog app', function () {
     })
 
     it('A blog can be deleted', function () {
-      cy.createBlog('abc', 'def', 'www')
+      cy.createBlog('abc', 'def', 'www', 0)
       cy.get('#viewButton').click()
       cy.get('#removeButton').click()
       cy.on('window:confirm', () => true)
       cy.get('abc').should('not.exist')
+    })
 
+    it('Blogs are sorted by likes', function () {
+      cy.createBlog('abc1', 'def', 'www', 5)
+      cy.createBlog('abc2', 'def', 'www', 0)
+      cy.createBlog('abc3', 'def', 'www', 12)
+      cy.get('.blog').eq(0).should('contain', 'abc3')
+      cy.get('.blog').eq(1).should('contain', 'abc1')
+      cy.get('.blog').eq(2).should('contain', 'abc2')
     })
   })
 })
