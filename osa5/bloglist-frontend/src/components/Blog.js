@@ -26,7 +26,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         <div style={{ display: 'flex' }}>{blog.title}&nbsp;</div>
         <div>{blog.author}&nbsp;</div>
         <div style={hideWhenVisible}>
-          <button onClick={toggleVisibility}>view</button>
+          <button id="viewButton" onClick={toggleVisibility}>view</button>
         </div>
         <div style={showWhenVisible}>
           <button onClick={toggleVisibility}>hide</button>
@@ -36,7 +36,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         <div>{blog.url}</div>
         <div style={{ display: 'flex' }}>
           <div>{blog.likes}&nbsp;</div><div>likes&nbsp;</div>
-          <button onClick={() => handleLike(blog)}>like</button>
+          <button id="likeButton" onClick={() => handleLike(blog)}>like</button>
         </div>
         <div>{blog.user.name}</div>
         <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>remove</button>
