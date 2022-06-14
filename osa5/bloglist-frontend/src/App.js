@@ -55,11 +55,12 @@ const App = () => {
 
   const createBlog = async (newBlog) => {
     try {
-      await blogService.create(newBlog)
-      newBlog.user = { username: user.username, name: user.name }
-      setBlogs(blogs.concat(newBlog))
+      const updatedBlog = await blogService.create(newBlog)
+      console.log(updatedBlog)
+      updatedBlog.user = { username: user.username, name: user.name }
+      setBlogs(blogs.concat(updatedBlog))
       blogFormRef.current.toggleVisibility()
-      setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
+      setMessage(`a new blog ${updatedBlog.title} by ${updatedBlog.author} added`)
       setTimeout(() => {
         setMessage(null)
       }, 5000)
