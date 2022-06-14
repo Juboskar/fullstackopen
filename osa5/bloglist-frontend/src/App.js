@@ -72,6 +72,29 @@ const App = () => {
     }
   }
 
+  const handleLike = async (blog) => {
+    const updatedBlog = {
+      title: blog.title,
+      author: blog.author,
+      url: blog.url,
+      user: blog.user.id,
+      likes: blog.likes + 1
+    }
+    await blogService.update(updatedBlog, blog.id)
+    const i = blogs.findIndex((obj => obj.id === blog.id))
+    blogs[i].likes = blogs[i].likes + 1
+    blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
+    setBlogs([...blogs])
+  }
+
+  const handleDelete = async (blog) => {
+    window.confirm(`delete ${blog.title} by ${blog.author}`)
+    await blogService.deleteBlog(blog.id)
+    const i = blogs.findIndex((obj => obj.id === blog.id))
+    blogs.splice(i, 1)
+    setBlogs([...blogs])
+  }
+
   if (user === null) {
     return (
       <div>
@@ -88,7 +111,8 @@ const App = () => {
         <h2>blogs</h2>
         {
           blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user} />
+            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user}
+            handleLike={handleLike} handleDelete={handleDelete} />
           )
         }
         <Togglable buttonLabel="create new" ref={blogFormRef}>

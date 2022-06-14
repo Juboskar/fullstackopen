@@ -1,8 +1,7 @@
 import { useState } from 'react'
-import blogService from '../services/blogs'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, setBlogs, blogs, user }) => {
+const Blog = ({ blog, user, handleDelete, handleLike }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -21,29 +20,6 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
     setVisible(!visible)
   }
 
-  const handleLike = async () => {
-    const updatedBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      user: blog.user.id,
-      likes: blog.likes + 1
-    }
-    await blogService.update(updatedBlog, blog.id)
-    const i = blogs.findIndex((obj => obj.id === blog.id))
-    blogs[i].likes = blogs[i].likes + 1
-    blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
-    setBlogs([...blogs])
-  }
-
-  const handleDelete = async () => {
-    window.confirm(`delete ${blog.title} by ${blog.author}`)
-    await blogService.deleteBlog(blog.id)
-    const i = blogs.findIndex((obj => obj.id === blog.id))
-    blogs.splice(i, 1)
-    setBlogs([...blogs])
-  }
-
   return (
     <div style={blogStyle}>
       <div style={{ display: 'flex' }} className="shownContent">
@@ -60,10 +36,10 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
         <div>{blog.url}</div>
         <div style={{ display: 'flex' }}>
           <div>{blog.likes}&nbsp;</div><div>likes&nbsp;</div>
-          <button onClick={handleLike}>like</button>
+          <button onClick={() => handleLike(blog)}>like</button>
         </div>
         <div>{blog.user.name}</div>
-        <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
+        <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>remove</button>
       </div>
     </div>
   )
@@ -72,8 +48,8 @@ const Blog = ({ blog, setBlogs, blogs, user }) => {
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
-  setBlogs: PropTypes.func.isRequired,
-  blogs: PropTypes.array.isRequired
+  handleDelete: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired
 }
 
 export default Blog

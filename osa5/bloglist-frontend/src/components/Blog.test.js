@@ -6,6 +6,8 @@ import Blog from './Blog'
 
 describe('<Blog />', () => {
   let container
+  const mockHandleLike = jest.fn()
+  const mockHandleDelete = jest.fn()
 
   beforeEach(() => {
     const blog = {
@@ -25,7 +27,7 @@ describe('<Blog />', () => {
       name: 'hello i am tester',
     }
     container = render(
-      <Blog blog={blog} user={user} blogs={[]} setBlogs={() => { }} />
+      <Blog blog={blog} user={user} blogs={[]} handleLike={mockHandleLike} handleDelete={mockHandleDelete} />
     ).container
   })
 
@@ -58,4 +60,12 @@ describe('<Blog />', () => {
     expect(div).not.toHaveStyle('display: none')
   })
 
+  test('like button works', async () => {
+    const user = userEvent.setup()
+
+    await user.click(screen.getByText('like'))
+    await user.click(screen.getByText('like'))
+
+    expect(mockHandleLike.mock.calls).toHaveLength(2)
+  })
 })
