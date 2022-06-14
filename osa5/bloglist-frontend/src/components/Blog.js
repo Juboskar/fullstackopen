@@ -18,7 +18,6 @@ const Blog = ({ blog }) => {
     setVisible(!visible)
   }
 
-
   return (
     <div style={blogStyle}>
       <div style={{ display: 'flex' }}>
