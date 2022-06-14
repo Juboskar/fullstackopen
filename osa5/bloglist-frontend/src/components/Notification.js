@@ -1,6 +1,6 @@
 const Notification = ({ message, error }) => {
     if (message === null) {
-        return <div/>
+        return <div />
     } else {
 
         const messageColor = error ? 'red' : 'green'
