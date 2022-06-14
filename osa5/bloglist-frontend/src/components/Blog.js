@@ -14,7 +14,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
-  const removeButtonStyle = { display: blog.user.name === user.username ? '' : 'none' }
+  const removeButtonStyle = { display: blog.user.username === user.username ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -39,7 +39,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
           <button id="likeButton" onClick={() => handleLike(blog)}>like</button>
         </div>
         <div>{blog.user.name}</div>
-        <button style={removeButtonStyle} onClick={() => handleDelete(blog)}>remove</button>
+        <button id="removeButton" style={removeButtonStyle} onClick={() => handleDelete(blog)}>remove</button>
       </div>
     </div>
   )
