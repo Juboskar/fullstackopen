@@ -1,7 +1,7 @@
 import { useState } from "react"
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, setBlogs, blogs }) => {
+const Blog = ({ blog, setBlogs, blogs, user }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -14,6 +14,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
   const showWhenVisible = { display: visible ? '' : 'none' }
+  const removeButtonStyle = { display: blog.user.name === user.username ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
@@ -34,12 +35,23 @@ const Blog = ({ blog, setBlogs, blogs }) => {
     setBlogs([...blogs])
   }
 
+  const handleDelete = async () => {
+    window.confirm(`delete ${blog.title} by ${blog.author}`)
+    await blogService.deleteBlog(blog.id)
+    const i = blogs.findIndex((obj => obj.id === blog.id))
+    blogs.splice(i, 1)
+    setBlogs([...blogs])
+  }
+
   return (
     <div style={blogStyle}>
       <div style={{ display: 'flex' }}>
         <div>{blog.title} {blog.author} </div>
         <div style={hideWhenVisible}>
           <button onClick={toggleVisibility}>view</button>
+        </div>
+        <div style={showWhenVisible}>
+          <button onClick={toggleVisibility}>hide</button>
         </div>
       </div>
       <div style={showWhenVisible}>
@@ -49,7 +61,7 @@ const Blog = ({ blog, setBlogs, blogs }) => {
           <button onClick={handleLike} >like</button>
         </div>
         <div>{blog.user.name}</div>
-        <button onClick={toggleVisibility}>hide</button>
+        <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
       </div>
     </div>
   )

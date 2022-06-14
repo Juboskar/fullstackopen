@@ -55,6 +55,7 @@ const App = () => {
 
   const createBlog = (newBlog) => {
     if (newBlog !== null) {
+      newBlog.user = { username: user.username, name: user.name }
       setBlogs(blogs.concat(newBlog))
       blogFormRef.current.toggleVisibility()
       setMessage(`a new blog ${newBlog.title} by ${newBlog.author} added`)
@@ -87,7 +88,7 @@ const App = () => {
         <h2>blogs</h2>
         {
           blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} />
+            <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user} />
           )
         }
         <Togglable buttonLabel="create new" ref={blogFormRef}>
