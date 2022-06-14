@@ -1,4 +1,3 @@
-import blogService from '../services/blogs'
 import { useState } from 'react'
 import PropTypes from 'prop-types'
 
@@ -8,19 +7,13 @@ const NewBlogForm = ({ createBlog }) => {
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
 
-  const handleCreateBlog = async (event) => {
+  const handleCreateBlog = (event) => {
     event.preventDefault()
-    try {
-      const newBlog = await blogService.create(
-        {
-          title, author, url
-        }
-      )
-      createBlog(newBlog)
-      setTitle('')
-      setAuthor('')
-      setUrl('')
-    } catch (error) { createBlog(null) }
+    const newBlog = { title, author, url }
+    createBlog(newBlog)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (

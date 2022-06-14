@@ -53,8 +53,9 @@ const App = () => {
     setUser(null)
   }
 
-  const createBlog = (newBlog) => {
-    if (newBlog !== null) {
+  const createBlog = async (newBlog) => {
+    try {
+      await blogService.create(newBlog)
       newBlog.user = { username: user.username, name: user.name }
       setBlogs(blogs.concat(newBlog))
       blogFormRef.current.toggleVisibility()
@@ -62,7 +63,7 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-    } else {
+    } catch (error) {
       setMessage('missing info')
       setError(true)
       setTimeout(() => {
@@ -112,7 +113,7 @@ const App = () => {
         {
           blogs.map(blog =>
             <Blog key={blog.id} blog={blog} setBlogs={setBlogs} blogs={blogs} user={user}
-            handleLike={handleLike} handleDelete={handleDelete} />
+              handleLike={handleLike} handleDelete={handleDelete} />
           )
         }
         <Togglable buttonLabel="create new" ref={blogFormRef}>
