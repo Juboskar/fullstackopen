@@ -5,6 +5,7 @@ import {
   useNavigate
 } from "react-router-dom"
 import { useField } from './hooks'
+import _ from 'lodash'
 
 const Menu = () => {
   const padding = {
@@ -114,15 +115,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {..._.omit({...content}, ['reset'])} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {..._.omit({...author}, ['reset'])} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {..._.omit({...info}, ['reset'])} />
         </div>
         <button>create</button>
       </form>
