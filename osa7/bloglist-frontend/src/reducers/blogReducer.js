@@ -22,17 +22,17 @@ const blogSlice = createSlice({
         ...blogToChange,
         likes: blogToChange.likes + 1,
       }
-      return state.map((a) => (a.id !== id ? a : changedBlog))
+      return state.map((a) => (a.id !== id ? a : changedBlog)).sort((a, b) => (a.likes < b.likes ? 1 : -1))
     },
     deleteById(state, action) {
       const id = action.payload
       const i = state.findIndex((obj) => obj.id === id)
       state.splice(i, 1)
-      setBlogs([...state])
+      setBlogs([...state].sort((a, b) => (a.likes < b.likes ? 1 : -1)))
     },
     appendBlog(state, action) {
-      const anecdote = action.payload
-      return state.concat(anecdote).sort((a, b) => (a.likes < b.likes ? 1 : -1))
+      const blog = action.payload
+      return state.concat(blog).sort((a, b) => (a.likes < b.likes ? 1 : -1))
     },
     setBlogs(state, action) {
       return action.payload
