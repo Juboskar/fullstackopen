@@ -5,15 +5,18 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import blogService from './services/blogs'
+import {
+  setErrorNotification,
+  setInfoNotification,
+} from './reducers/notificationReducer'
+import { useDispatch } from 'react-redux'
 
 const App = () => {
+  const dispatch = useDispatch()
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
 
   const blogFormRef = useRef()
-
-  const [message, setMessage] = useState(null)
-  const [error, setError] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => {
@@ -36,12 +39,7 @@ const App = () => {
       window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
       setUser(user)
     } else {
-      setMessage('wrong credentials')
-      setError(true)
-      setTimeout(() => {
-        setMessage(null)
-        setError(false)
-      }, 5000)
+      dispatch(setErrorNotification('wrong credentials', 5000))
     }
   }
 
@@ -57,19 +55,14 @@ const App = () => {
       updatedBlog.user = { username: user.username, name: user.name }
       setBlogs(blogs.concat(updatedBlog))
       blogFormRef.current.toggleVisibility()
-      setMessage(
-        `a new blog ${updatedBlog.title} by ${updatedBlog.author} added`
+      dispatch(
+        setInfoNotification(
+          `a new blog ${updatedBlog.title} by ${updatedBlog.author} added`,
+          5000
+        )
       )
-      setTimeout(() => {
-        setMessage(null)
-      }, 5000)
     } catch (error) {
-      setMessage('missing info')
-      setError(true)
-      setTimeout(() => {
-        setMessage(null)
-        setError(false)
-      }, 5000)
+      dispatch(setErrorNotification('missing info', 5000))
     }
   }
 
@@ -99,14 +92,14 @@ const App = () => {
   if (user === null) {
     return (
       <div>
-        <Notification message={message} error={error} />
+        <Notification />
         <Login login={login} />
       </div>
     )
   } else {
     return (
       <div>
-        <Notification message={message} error={error} />
+        <Notification />
         <p> {user.username} logged in</p>
         <button onClick={handleLogout}>Logout</button>
         <h2>blogs</h2>
