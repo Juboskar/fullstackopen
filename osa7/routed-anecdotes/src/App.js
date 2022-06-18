@@ -82,7 +82,7 @@ const Footer = () => (
 const CreateNew = (props) => {
   const content = useField('text')
   const author = useField('text')
-  const info =useField('text')
+  const info = useField('text')
 
   const navigate = useNavigate()
 
@@ -100,6 +100,12 @@ const CreateNew = (props) => {
     setTimeout(() => {
       props.setNotification(null)
     }, 5000)
+  }
+
+  const handleReset = () => {
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -120,6 +126,7 @@ const CreateNew = (props) => {
         </div>
         <button>create</button>
       </form>
+      <button onClick={handleReset}>reset</button>
     </div>
   )
 
