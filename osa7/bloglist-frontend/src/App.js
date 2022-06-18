@@ -9,20 +9,17 @@ import {
   setErrorNotification,
   setInfoNotification,
 } from './reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { deleteBlog, createBlog, initializeBlogs, likeBlog } from './reducers/blogReducer'
 
 const App = () => {
   const dispatch = useDispatch()
-  const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
-
+  const blogs = useSelector((state) => state.blogs)
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
-      setBlogs(blogs)
-    })
+    dispatch(initializeBlogs())
   }, [])
 
   useEffect(() => {
@@ -48,16 +45,15 @@ const App = () => {
     setUser(null)
   }
 
-  const createBlog = async (newBlog) => {
+  const createNewBlog = async (newBlog) => {
     try {
-      const updatedBlog = await blogService.create(newBlog)
-      console.log(updatedBlog)
-      updatedBlog.user = { username: user.username, name: user.name }
-      setBlogs(blogs.concat(updatedBlog))
+      newBlog.user = { username: user.username, name: user.name }
+      dispatch(createBlog(newBlog))
+
       blogFormRef.current.toggleVisibility()
       dispatch(
         setInfoNotification(
-          `a new blog ${updatedBlog.title} by ${updatedBlog.author} added`,
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
           5000
         )
       )
@@ -67,26 +63,12 @@ const App = () => {
   }
 
   const handleLike = async (blog) => {
-    const updatedBlog = {
-      title: blog.title,
-      author: blog.author,
-      url: blog.url,
-      user: blog.user.id,
-      likes: blog.likes + 1,
-    }
-    await blogService.update(updatedBlog, blog.id)
-    const i = blogs.findIndex((obj) => obj.id === blog.id)
-    blogs[i].likes = blogs[i].likes + 1
-    blogs.sort((a, b) => (a.likes < b.likes ? 1 : -1))
-    setBlogs([...blogs])
+    dispatch(likeBlog(blog))
   }
 
   const handleDelete = async (blog) => {
     window.confirm(`delete ${blog.title} by ${blog.author}`)
-    await blogService.deleteBlog(blog.id)
-    const i = blogs.findIndex((obj) => obj.id === blog.id)
-    blogs.splice(i, 1)
-    setBlogs([...blogs])
+    dispatch(deleteBlog(blog.id))
   }
 
   if (user === null) {
@@ -107,7 +89,6 @@ const App = () => {
           <Blog
             key={blog.id}
             blog={blog}
-            setBlogs={setBlogs}
             blogs={blogs}
             user={user}
             handleLike={handleLike}
@@ -115,7 +96,7 @@ const App = () => {
           />
         ))}
         <Togglable buttonLabel="create new" ref={blogFormRef}>
-          <NewBlogForm createBlog={createBlog} />
+          <NewBlogForm createBlog={createNewBlog} />
         </Togglable>
       </div>
     )
