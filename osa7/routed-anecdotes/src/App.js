@@ -4,6 +4,7 @@ import {
   Routes, Route, Link, useParams,
   useNavigate
 } from "react-router-dom"
+import { useField } from './hooks'
 
 const Menu = () => {
   const padding = {
@@ -20,18 +21,12 @@ const Menu = () => {
 
 const Notification = ({ notification }) => {
 
-  const style = {
-    border: 'solid',
-    padding: 10,
-    borderWidth: 1
-  }
-
   if (!notification) {
     return null
   }
 
   return (
-    <div style={style}>
+    <div>
       {notification}
     </div>
   )
@@ -85,22 +80,23 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+  const content = useField('text')
+  const author = useField('text')
+  const info =useField('text')
+
   const navigate = useNavigate()
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: content.value,
+      author: author.value,
+      info: info.value,
       votes: 0
     })
     navigate('/')
-    props.setNotification('hallo')
+    props.setNotification('a new anecdote ' + content.value + ' created')
     setTimeout(() => {
       props.setNotification(null)
     }, 5000)
@@ -112,15 +108,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...content} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...author} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e) => setInfo(e.target.value)} />
+          <input {...info} />
         </div>
         <button>create</button>
       </form>
@@ -171,9 +167,9 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Notification notification={notification} />
         <h1>Software anecdotes</h1>
         <Menu />
+        <Notification notification={notification} />
         <Routes>
           <Route path="/" element={<AnecdoteList anecdotes={anecdotes} />} />
           <Route path="/about" element={<About />} />
