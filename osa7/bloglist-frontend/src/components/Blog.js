@@ -1,31 +1,31 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Blog = ({ blog, user, handleDelete, handleLike }) => {
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: "solid",
+    border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-  };
+  }
 
-  const [visible, setVisible] = useState(false);
+  const [visible, setVisible] = useState(false)
 
-  const hideWhenVisible = { display: visible ? "none" : "" };
-  const showWhenVisible = { display: visible ? "" : "none" };
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
   const removeButtonStyle = {
-    display: blog.user.username === user.username ? "" : "none",
-  };
+    display: blog.user.username === user.username ? '' : 'none',
+  }
 
   const toggleVisibility = () => {
-    setVisible(!visible);
-  };
+    setVisible(!visible)
+  }
 
   return (
     <div style={blogStyle} className="blog">
-      <div style={{ display: "flex" }} className="shownContent">
-        <div style={{ display: "flex" }}>{blog.title}&nbsp;</div>
+      <div style={{ display: 'flex' }} className="shownContent">
+        <div style={{ display: 'flex' }}>{blog.title}&nbsp;</div>
         <div>{blog.author}&nbsp;</div>
         <div style={hideWhenVisible}>
           <button id="viewButton" onClick={toggleVisibility}>
@@ -38,7 +38,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
       </div>
       <div style={showWhenVisible} className="hiddenContent">
         <div>{blog.url}</div>
-        <div style={{ display: "flex" }}>
+        <div style={{ display: 'flex' }}>
           <div>{blog.likes}&nbsp;</div>
           <div>likes&nbsp;</div>
           <button id="likeButton" onClick={() => handleLike(blog)}>
@@ -55,14 +55,14 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         </button>
       </div>
     </div>
-  );
-};
+  )
+}
 
 Blog.propTypes = {
   blog: PropTypes.object.isRequired,
   user: PropTypes.object.isRequired,
   handleDelete: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired,
-};
+}
 
-export default Blog;
+export default Blog

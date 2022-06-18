@@ -1,25 +1,25 @@
-import loginService from "../services/login";
-import { useState } from "react";
-import PropTypes from "prop-types";
+import loginService from '../services/login'
+import { useState } from 'react'
+import PropTypes from 'prop-types'
 
 const Login = ({ login }) => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
   const handleLogin = async (event) => {
-    event.preventDefault();
+    event.preventDefault()
     try {
       const user = await loginService.login({
         username,
         password,
-      });
-      login(user);
-      setUsername("");
-      setPassword("");
+      })
+      login(user)
+      setUsername('')
+      setPassword('')
     } catch (error) {
-      login(null);
+      login(null)
     }
-  };
+  }
 
   return (
     <div>
@@ -50,11 +50,11 @@ const Login = ({ login }) => {
         </button>
       </form>
     </div>
-  );
-};
+  )
+}
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-};
+}
 
-export default Login;
+export default Login
