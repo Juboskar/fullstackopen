@@ -47,9 +47,9 @@ export const createBlog = (content) => {
   }
 }
 
-export const likeBlog = ({ content, votes, id }) => {
+export const likeBlog = ({ content, likes, id }) => {
   return async (dispatch) => {
-    await blogService.update({ content, votes: votes + 1 }, id)
+    await blogService.update({ content, likes: likes + 1 }, id)
     dispatch(like(id))
   }
 }
