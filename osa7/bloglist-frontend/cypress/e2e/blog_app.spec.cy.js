@@ -23,7 +23,7 @@ describe('Blog app', function () {
       cy.get('#username').type('testuser')
       cy.get('#password').type('testpassword')
       cy.get('#login-button').click()
-      cy.contains('testuser logged in')
+      cy.contains('Testi Usersson logged in')
     })
 
     it('fails with wrong credentials', function () {

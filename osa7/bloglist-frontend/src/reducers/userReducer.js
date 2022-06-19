@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import blogService from '../services/blogs'
+import loginService from '../services/login'
+import { setErrorNotification } from './notificationReducer'
 
 const initialState = null
 
@@ -24,6 +26,21 @@ export const resetUser = () => {
   return async (dispatch) => {
     blogService.setToken(null)
     dispatch(loggedInUser(null))
+  }
+}
+
+export const login = ({ username, password }) => {
+  return async (dispatch) => {
+    try {
+      const user = await loginService.login({
+        username,
+        password,
+      })
+      dispatch(setUser(user))
+    } catch (error) {
+      dispatch(setErrorNotification('wrong credentials', 5000))
+      dispatch(resetUser())
+    }
   }
 }
 
