@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react'
 import Login from './components/Login'
 import BlogList from './components/BlogList'
 import UserList from './components/UserList'
+import User from './components/User'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
@@ -91,6 +92,7 @@ const App = () => {
                 </div>
               }
             />
+            <Route path="/users/:id" element={<User />} />
             <Route path="/users" element={<UserList />} />
           </Routes>
         </div>
