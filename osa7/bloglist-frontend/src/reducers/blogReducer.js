@@ -22,7 +22,9 @@ const blogSlice = createSlice({
         ...blogToChange,
         likes: blogToChange.likes + 1,
       }
-      return state.map((a) => (a.id !== id ? a : changedBlog)).sort((a, b) => (a.likes < b.likes ? 1 : -1))
+      return state
+        .map((a) => (a.id !== id ? a : changedBlog))
+        .sort((a, b) => (a.likes < b.likes ? 1 : -1))
     },
     deleteById(state, action) {
       const id = action.payload
@@ -37,6 +39,17 @@ const blogSlice = createSlice({
     setBlogs(state, action) {
       return action.payload
     },
+    setComment(state, action) {
+      const id = action.payload.blog
+      const blogToChange = state.find((n) => n.id === id)
+      const changedBlog = {
+        ...blogToChange,
+        comments: blogToChange.comments.concat(action.payload),
+      }
+      return state
+        .map((a) => (a.id !== id ? a : changedBlog))
+        .sort((a, b) => (a.likes < b.likes ? 1 : -1))
+    },
   },
 })
 
@@ -50,7 +63,14 @@ export const createBlog = (content) => {
 export const likeBlog = ({ content, likes, id }) => {
   return async (dispatch) => {
     await blogService.update({ content, likes: likes + 1 }, id)
-    dispatch(like(id))
+    dispatch(setComment(id))
+  }
+}
+
+export const commentBlog = ({ comment, id }) => {
+  return async (dispatch) => {
+    const resp = await blogService.comment({ content: comment }, id)
+    dispatch(setComment(resp))
   }
 }
 
@@ -61,5 +81,6 @@ export const deleteBlog = (id) => {
   }
 }
 
-export const { like, appendBlog, setBlogs, deleteById } = blogSlice.actions
+export const { like, appendBlog, setBlogs, deleteById, setComment } =
+  blogSlice.actions
 export default blogSlice.reducer
