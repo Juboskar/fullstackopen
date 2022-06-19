@@ -26,6 +26,11 @@ const BlogView = () => {
         like
       </button>
       <div>Added by {blog.user.name}</div>
+      <ul>
+        {blog.comments.map((comment) => (
+          <li key={comment.id}>{comment.content}</li>
+        ))}
+      </ul>
     </div>
   )
 }

@@ -1,13 +1,14 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { resetUser } from '../reducers/userReducer'
 
 const NavBar = () => {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const user = useSelector((state) => state.user)
   const handleLogout = () => {
-    window.localStorage.clear()
     dispatch(resetUser())
+    navigate('/')
   }
 
   return (

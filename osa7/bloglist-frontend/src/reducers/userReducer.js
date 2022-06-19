@@ -25,6 +25,7 @@ export const setUser = (user) => {
 export const resetUser = () => {
   return async (dispatch) => {
     blogService.setToken(null)
+    window.localStorage.clear()
     dispatch(loggedInUser(null))
   }
 }
@@ -37,6 +38,7 @@ export const login = ({ username, password }) => {
         password,
       })
       dispatch(setUser(user))
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(user))
     } catch (error) {
       dispatch(setErrorNotification('wrong credentials', 5000))
       dispatch(resetUser())

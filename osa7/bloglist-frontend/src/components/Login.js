@@ -1,12 +1,11 @@
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux/es/exports'
+import { useDispatch } from 'react-redux/es/exports'
 import { login } from '../reducers/userReducer'
 
 const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const dispatch = useDispatch()
-  const loggedIn = useSelector((state) => state.user)
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -17,11 +16,8 @@ const Login = () => {
         password,
       })
     )
-    if (loggedIn !== null) {
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(loggedIn))
-      setUsername('')
-      setPassword('')
-    }
+    setUsername('')
+    setPassword('')
   }
 
   return (
