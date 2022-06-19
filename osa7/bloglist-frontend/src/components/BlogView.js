@@ -35,9 +35,10 @@ const BlogView = () => {
         like
       </button>
       <div>Added by {blog.user.name}</div>
-      <ul>
+      <h3>comments</h3>
+      <ul className="list-group">
         {blog.comments.map((c) => (
-          <li key={c.id}>{c.content}</li>
+          <li className="list-group-item" key={c.id}>{c.content}</li>
         ))}
       </ul>
 

@@ -66,7 +66,7 @@ const App = () => {
         <div className="container">
           <NavBar />
           <Notification />
-          <h2>blogs</h2>
+          <h1>Blogs</h1>
           <Routes>
             <Route
               path="/"

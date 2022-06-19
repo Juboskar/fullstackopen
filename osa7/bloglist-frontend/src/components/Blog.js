@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 const Blog = ({ blog, user, handleDelete, handleLike }) => {
   const blogStyle = {
     paddingTop: 10,
+    paddingBottom: 10,
     paddingLeft: 2,
     border: 'solid',
     borderWidth: 1,
@@ -27,16 +28,25 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
     <div style={blogStyle} className="blog">
       <div style={{ display: 'flex' }} className="shownContent">
         <div style={{ display: 'flex' }}>
-          <Link  to={'/blogs/' + blog.id}>{blog.title}&nbsp;</Link>
+          <Link to={'/blogs/' + blog.id}>{blog.title}&nbsp;</Link>
         </div>
         <div>{blog.author}&nbsp;</div>
         <div style={hideWhenVisible}>
-          <button id="viewButton" onClick={toggleVisibility}>
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            id="viewButton"
+            onClick={toggleVisibility}
+          >
             view
           </button>
         </div>
         <div style={showWhenVisible}>
-          <button onClick={toggleVisibility}>hide</button>
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            onClick={toggleVisibility}
+          >
+            hide
+          </button>
         </div>
       </div>
       <div style={showWhenVisible} className="hiddenContent">
@@ -44,12 +54,17 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         <div style={{ display: 'flex' }}>
           <div>{blog.likes}&nbsp;</div>
           <div>likes&nbsp;</div>
-          <button id="likeButton" onClick={() => handleLike(blog)}>
+          <button
+            className="btn btn-sm btn-outline-secondary"
+            id="likeButton"
+            onClick={() => handleLike(blog)}
+          >
             like
           </button>
         </div>
         <div>{blog.user.name}</div>
         <button
+          className="btn btn-sm btn-outline-secondary"
           id="removeButton"
           style={removeButtonStyle}
           onClick={() => handleDelete(blog)}

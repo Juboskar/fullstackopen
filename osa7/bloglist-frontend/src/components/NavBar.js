@@ -12,16 +12,18 @@ const NavBar = () => {
   }
 
   return (
-    <div>
-      <Link to={'/'} style={{ display: 'inline' }}>
-        blogs&nbsp;
-      </Link>
-      <Link to={'/users/'} style={{ display: 'inline' }}>
-        users&nbsp;
-      </Link>
-      <p style={{ display: 'inline' }}>{user.name} logged in&nbsp;</p>
-      <button onClick={handleLogout}>Logout</button>
-    </div>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div>
+        <Link to={'/'} style={{ display: 'inline' }}>
+          blogs&nbsp;
+        </Link>
+        <Link to={'/users/'} style={{ display: 'inline' }}>
+          users&nbsp;
+        </Link>
+        <p style={{ display: 'inline' }}>{user.name} logged in&nbsp;</p>
+        <button className="navbar-toggler" onClick={handleLogout}>Logout</button>
+      </div>
+    </nav>
   )
 }
 

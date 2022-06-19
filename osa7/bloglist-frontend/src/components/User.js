@@ -12,9 +12,11 @@ const User = () => {
     <div>
       <div>{user.name}</div>
       <h3>added blogs</h3>
-      <ul>
+      <ul className="list-group">
         {user.blogs.map((b) => (
-          <li key={b.id}>{b.title}</li>
+          <li className="list-group-item" key={b.id}>
+            {b.title}
+          </li>
         ))}
       </ul>
     </div>
