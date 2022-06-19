@@ -11,19 +11,48 @@ const NavBar = () => {
     navigate('/')
   }
 
+  const path = window.location.pathname
+  const toggleWhenUsersSelected = {
+    paddingTop: 10,
+    border: path.includes('/users') ? 0 : 'solid 1px black',
+  }
+  const untoggleWhenUsersSelected = {
+    padding: 10,
+    border: path.includes('/users') ? 'solid 1px black' : 0,
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div>
-        <Link to={'/'} style={{ display: 'inline' }}>
-          blogs&nbsp;
-        </Link>
-        <Link to={'/users/'} style={{ display: 'inline' }}>
-          users&nbsp;
-        </Link>
-        <p style={{ display: 'inline' }}>{user.name} logged in&nbsp;</p>
-        <button className="navbar-toggler" onClick={handleLogout}>Logout</button>
-      </div>
-    </nav>
+    <div>
+      <nav
+        className="navbar navbar-expand-lg navbar-light"
+        style={{
+          backgroundColor: 'lightgreen',
+          borderBottomLeftRadius: '10px',
+          borderBottomRightRadius: '10px',
+          border: '1px solid',
+        }}
+      >
+        <div
+          className="container"
+          style={{
+            padding: 10,
+          }}
+        >
+          <Link to={'/'} style={toggleWhenUsersSelected}>
+            blogs&nbsp;
+          </Link>
+          <Link to={'/users/'} style={untoggleWhenUsersSelected}>
+            users&nbsp;
+          </Link>
+          <p style={{ marginBottom: 0 }}>
+            <b> {user.name} logged in&nbsp; </b>
+          </p>
+          <button className="navbar-toggler" onClick={handleLogout}>
+            Logout
+          </button>
+        </div>
+      </nav>
+    </div>
   )
 }
 

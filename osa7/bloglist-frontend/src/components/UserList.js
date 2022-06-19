@@ -7,7 +7,7 @@ const UserList = () => {
   return (
     <div>
       <h2>Users</h2>
-      <Table striped bordered>
+      <Table striped bordered style={{ border: 'black' }}>
         <thead>
           <tr>
             <th></th>

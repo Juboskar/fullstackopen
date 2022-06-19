@@ -55,7 +55,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
           <div>{blog.likes}&nbsp;</div>
           <div>likes&nbsp;</div>
           <button
-            className="btn btn-sm btn-outline-secondary"
+            className="btn btn-sm btn-outline-success"
             id="likeButton"
             onClick={() => handleLike(blog)}
           >
@@ -64,7 +64,7 @@ const Blog = ({ blog, user, handleDelete, handleLike }) => {
         </div>
         <div>{blog.user.name}</div>
         <button
-          className="btn btn-sm btn-outline-secondary"
+          className="btn btn-sm btn-outline-danger"
           id="removeButton"
           style={removeButtonStyle}
           onClick={() => handleDelete(blog)}

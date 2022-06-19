@@ -31,7 +31,7 @@ const BlogView = () => {
         <a href={blog.url}>{blog.url}</a>
       </div>
       <div>{blog.likes} likes</div>
-      <button id="likeButton" onClick={handleLike}>
+      <button className="btn btn-sm btn-outline-success" id="likeButton" onClick={handleLike}>
         like
       </button>
       <div>Added by {blog.user.name}</div>
@@ -52,7 +52,7 @@ const BlogView = () => {
             onChange={({ target }) => setComment(target.value)}
           />
         </div>
-        <button type="submit">comment</button>
+        <button className="btn btn-sm btn-outline-primary" type="submit">comment</button>
       </form>
     </div>
   )
