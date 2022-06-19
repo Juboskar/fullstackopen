@@ -1,10 +1,22 @@
 import loginService from '../services/login'
 import { useState } from 'react'
-import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux/es/exports'
+import { setUser } from '../reducers/userReducer'
+import { setErrorNotification } from '../reducers/notificationReducer'
 
-const Login = ({ login }) => {
+const Login = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const dispatch = useDispatch()
+
+  const login = (u) => {
+    if (u !== null) {
+      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(u))
+      dispatch(setUser(u))
+    } else {
+      dispatch(setErrorNotification('wrong credentials', 5000))
+    }
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -51,10 +63,6 @@ const Login = ({ login }) => {
       </form>
     </div>
   )
-}
-
-Login.propTypes = {
-  login: PropTypes.func.isRequired,
 }
 
 export default Login

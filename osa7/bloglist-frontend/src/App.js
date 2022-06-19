@@ -7,6 +7,7 @@ import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
 import BlogView from './components/BlogView'
 import Togglable from './components/Togglable'
+import NavBar from './components/NavBar'
 import {
   setErrorNotification,
   setInfoNotification,
@@ -14,7 +15,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { createBlog, initializeBlogs } from './reducers/blogReducer'
 import { initializeUsers } from './reducers/usersReducer'
-import { setUser, resetUser } from './reducers/userReducer'
+import { setUser } from './reducers/userReducer'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 
 const App = () => {
@@ -34,20 +35,6 @@ const App = () => {
       dispatch(setUser(u))
     }
   }, [])
-
-  const login = (u) => {
-    if (u !== null) {
-      window.localStorage.setItem('loggedBlogAppUser', JSON.stringify(u))
-      dispatch(setUser(u))
-    } else {
-      dispatch(setErrorNotification('wrong credentials', 5000))
-    }
-  }
-
-  const handleLogout = () => {
-    window.localStorage.clear()
-    dispatch(resetUser())
-  }
 
   const createNewBlog = async (newBlog) => {
     try {
@@ -70,17 +57,16 @@ const App = () => {
     return (
       <div>
         <Notification />
-        <Login login={login} />
+        <Login />
       </div>
     )
   } else {
     return (
       <Router>
         <div>
+          <NavBar name={user.name} />
           <Notification />
           <h2>blogs</h2>
-          <p> {user.username} logged in</p>
-          <button onClick={handleLogout}>Logout</button>
           <Routes>
             <Route
               path="/"
