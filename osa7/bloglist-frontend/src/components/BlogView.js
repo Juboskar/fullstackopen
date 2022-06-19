@@ -31,7 +31,7 @@ const BlogView = () => {
         <a href={blog.url}>{blog.url}</a>
       </div>
       <div>{blog.likes} likes</div>
-      <button id="likeButton" onClick={() => handleLike(blog)}>
+      <button id="likeButton" onClick={handleLike}>
         like
       </button>
       <div>Added by {blog.user.name}</div>

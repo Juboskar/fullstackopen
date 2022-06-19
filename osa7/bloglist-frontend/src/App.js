@@ -55,7 +55,7 @@ const App = () => {
 
   if (user === null) {
     return (
-      <div>
+      <div className="container">
         <Notification />
         <Login />
       </div>
@@ -63,7 +63,7 @@ const App = () => {
   } else {
     return (
       <Router>
-        <div>
+        <div className="container">
           <NavBar />
           <Notification />
           <h2>blogs</h2>
