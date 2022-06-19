@@ -5,6 +5,7 @@ import UserList from './components/UserList'
 import User from './components/User'
 import NewBlogForm from './components/NewBlogForm'
 import Notification from './components/Notification'
+import BlogView from './components/BlogView'
 import Togglable from './components/Togglable'
 import {
   setErrorNotification,
@@ -93,6 +94,7 @@ const App = () => {
               }
             />
             <Route path="/users/:id" element={<User />} />
+            <Route path="/blogs/:id" element={<BlogView />} />
             <Route path="/users" element={<UserList />} />
           </Routes>
         </div>
