@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux/es/exports'
+import { useDispatch, useSelector } from 'react-redux/es/exports'
 import { resetUser } from '../reducers/userReducer'
 
-const NavBar = ({ name }) => {
+const NavBar = () => {
   const dispatch = useDispatch()
+  const user = useSelector((state) => state.user)
   const handleLogout = () => {
     window.localStorage.clear()
     dispatch(resetUser())
@@ -17,7 +18,7 @@ const NavBar = ({ name }) => {
       <Link to={'/users/'} style={{ display: 'inline' }}>
         users&nbsp;
       </Link>
-      <p style={{ display: 'inline' }}>{name} logged in&nbsp;</p>
+      <p style={{ display: 'inline' }}>{user.name} logged in&nbsp;</p>
       <button onClick={handleLogout}>Logout</button>
     </div>
   )

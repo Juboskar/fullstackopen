@@ -64,7 +64,7 @@ const App = () => {
     return (
       <Router>
         <div>
-          <NavBar name={user.name} />
+          <NavBar />
           <Notification />
           <h2>blogs</h2>
           <Routes>
