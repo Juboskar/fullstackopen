@@ -47,7 +47,7 @@ const NavBar = () => {
           <p style={{ marginBottom: 0 }}>
             <b> {user.name} logged in&nbsp; </b>
           </p>
-          <button className="navbar-toggler" onClick={handleLogout}>
+          <button className="btn btn-sm btn-outline-primary" onClick={handleLogout}>
             Logout
           </button>
         </div>
